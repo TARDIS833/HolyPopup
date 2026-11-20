@@ -764,7 +764,7 @@ fn setup_tray(app: &tauri::App) -> tauri::Result<()> {
     #[cfg(not(target_os = "macos"))]
     let icon = app
         .default_window_icon()
-        .cloned()
+        .map(|icon| icon.clone().to_owned())
         .unwrap_or_else(tray_icon_image);
     TrayIconBuilder::with_id("holypop")
         .icon(icon)
