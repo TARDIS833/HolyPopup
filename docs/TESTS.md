@@ -1,5 +1,12 @@
 # HolyPop 검증 체크리스트
 
+## GitHub 빌드 검증 — 2026-11-20
+
+- 소스 커밋 `66fd80d`: [GitHub Actions 실행](https://github.com/TARDIS833/HolyPopup/actions/runs/44678875820)에서 Windows x64, macOS Apple Silicon, macOS Intel 각각 Rust 테스트 13개, JavaScript 테스트 2개, 포맷 검사, Clippy를 통과했다.
+- 세 환경 모두 릴리스 빌드 및 설치 파일 업로드 완료. Windows NSIS `.exe`, macOS 아키텍처별 `.dmg`를 실행 화면의 Artifacts에서 다운로드한다. 보관 기간은 30일이다.
+- 첫 Windows CI에서 발견한 트레이 아이콘 참조 수명 오류와 macOS 조건부 분기에 따른 Windows Clippy 오류를 수정하고 재검증했다.
+- 이번 배포 빌드는 전부 GitHub에서 수행했다. 다운로드한 설치 파일의 실제 설치·실행, 코드 서명·Apple 공증은 수행하지 않았다. 이전 Windows 교차 컴파일 실패 기록은 과거 상태이며 이번 GitHub 네이티브 빌드 성공과 구분한다.
+
 ## 빠른 일시 중지 검증 — 2026-11-20
 
 - 최종 macOS 릴리스 `cargo tauri build --bundles app` 성공. `HolyPop.app` 번들 갱신 완료.
