@@ -689,6 +689,7 @@ fn hide_main(app: &tauri::AppHandle) {
     if let Some(window) = app.get_webview_window("main") {
         if let Err(e) = window.hide() {
             eprintln!("설정 창 숨기기 실패: {e}");
+            #[cfg(target_os = "macos")]
             return;
         }
         #[cfg(target_os = "macos")]
