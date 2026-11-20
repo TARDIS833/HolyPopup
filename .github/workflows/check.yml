@@ -1,0 +1,59 @@
+name: Build HolyPop
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: ${{ matrix.name }}
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            name: Windows-x64
+            bundles: nsis
+            artifact: src-tauri/target/release/bundle/nsis/*.exe
+          - os: macos-15
+            name: macOS-AppleSilicon
+            bundles: dmg
+            artifact: src-tauri/target/release/bundle/dmg/*.dmg
+          - os: macos-15-intel
+            name: macOS-Intel
+            bundles: dmg
+            artifact: src-tauri/target/release/bundle/dmg/*.dmg
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: cargo fmt --manifest-path src-tauri/Cargo.toml --check
+      - run: cargo test --manifest-path src-tauri/Cargo.toml --locked
+      - run: cargo clippy --manifest-path src-tauri/Cargo.toml --locked -- -D warnings
+      - run: node --test ui/helpers.test.mjs
+      - name: Build installer
+        working-directory: src-tauri
+        run: npx --yes @tauri-apps/cli@2.10.0 build --ci --bundles ${{ matrix.bundles }} -- --locked
+      - uses: actions/upload-artifact@v4
+        with:
+          name: HolyPop-${{ matrix.name }}-${{ github.sha }}
+          path: ${{ matrix.artifact }}
+          if-no-files-found: error
+          retention-days: 30

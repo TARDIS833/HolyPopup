@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HolyPop</title><link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+    <header><div><p class="eyebrow">A MOMENT OF WORD</p><h1>HolyPop <span>말씀 설정</span></h1></div><label class="switch" title="예약된 말씀 표시를 켜거나 끕니다"><input id="enabled" type="checkbox"><span class="track"></span><span>자동 표시</span></label></header>
+    <nav class="tabs" aria-label="설정 분류"><button type="button" class="active" data-tab="verse" aria-current="page">말씀</button><button type="button" data-tab="schedule">시간</button><button type="button" data-tab="display">화면</button><button type="button" data-tab="layout">배치</button></nav>
+    <section id="verse" class="panel">
+      <div class="section-head"><div><p class="eyebrow">01 / WORD</p><h2>어떤 말씀을 만날까요?</h2></div></div>
+      <div class="grid two">
+        <label title="말씀을 고르는 방법을 선택합니다">선택 방식<select id="mode"><option value="today">오늘의 말씀</option><option value="selected">직접 선택</option><option value="random">무작위</option></select></label>
+        <label title="표시할 번역을 선택합니다. WEB은 일부 구절만 제공됩니다.">번역<select id="version"></select></label>
+      </div>
+      <label id="verse-label" title="직접 표시할 구절을 선택합니다">구절<select id="selected_index"></select></label>
+      <div id="verse-preview" class="verse-preview"><span class="quote">“</span><p id="sample-text"></p><small id="sample-ref"></small></div>
+      <details><summary title="직접 입력한 말씀을 목록에 추가합니다">내 말씀 추가 <span>＋</span></summary><div class="custom-grid"><label>번역<input id="custom-version" placeholder="예: 개인 번역" maxlength="100"></label><label>구절<input id="custom-reference" placeholder="예: 요한복음 3:16" maxlength="200"></label><label class="wide">말씀<textarea id="custom-text" rows="2" placeholder="말씀을 입력하세요"></textarea></label><button type="button" id="add-custom" class="secondary">목록에 추가</button></div></details>
+    </section>
+    <section id="schedule" class="panel" hidden>
+      <div class="section-head"><div><p class="eyebrow">02 / RHYTHM</p><h2>언제 함께할까요?</h2></div></div>
+      <div class="grid two"><label title="표시 사이의 시간 간격입니다">표시 간격 <span class="unit">분</span><input id="interval_minutes" type="number" required min="1" max="1440" step="1"></label><label title="한 번 표시되는 시간입니다">표시 시간 <span class="unit">초</span><input id="duration_seconds" type="number" required min="1" max="600" step="1"></label></div>
+      <div class="grid two"><label title="자동 표시를 시작할 현지 시각입니다">시작 시간<input id="start_time" type="time" required></label><label title="자동 표시를 마칠 현지 시각입니다. 시작보다 이르면 다음 날까지, 같으면 하루 종일 표시합니다.">종료 시간<input id="end_time" type="time" required></label></div>
+      <fieldset title="자동 표시할 요일을 선택합니다"><legend>반복 요일</legend><div class="weekdays"><label><input type="checkbox" value="0"><span>월</span></label><label><input type="checkbox" value="1"><span>화</span></label><label><input type="checkbox" value="2"><span>수</span></label><label><input type="checkbox" value="3"><span>목</span></label><label><input type="checkbox" value="4"><span>금</span></label><label><input type="checkbox" value="5"><span>토</span></label><label><input type="checkbox" value="6"><span>일</span></label></div></fieldset>
+    </section>
+    <section id="display" class="panel" hidden>
+      <div class="section-head"><div><p class="eyebrow">03 / DISPLAY</p><h2>나만의 모습으로</h2></div></div>
+      <div class="grid two"><label title="말씀의 글자 크기입니다">글자 크기 <output id="font-value"></output><input id="font_size" type="range" min="12" max="120" step="1"></label><label title="말씀의 불투명도입니다">불투명도 <output id="opacity-value"></output><input id="opacity" type="range" min="0.1" max="1" step="0.05"></label></div>
+      <div class="grid two"><label title="말씀이 나타나는 효과입니다">효과<select id="effect"><option value="fade">페이드</option><option value="slide">슬라이드</option><option value="pop">팝</option><option value="scroll">스크롤</option><option value="none">없음</option></select></label><label title="말씀 영역의 배경을 선택합니다. 유리 효과는 반투명 표현이며 바탕화면을 흐리게 하지 않습니다.">스타일<select id="style"><option value="shadow">그림자</option><option value="plain">배경 없음</option><option value="glass">유리</option><option value="translucent">반투명</option><option value="color">단색</option></select></label></div>
+      <div class="grid two"><label title="배경색에 적용됩니다">배경색<input id="color" type="color"></label><label title="말씀의 글자색입니다">글자색<input id="text_color" type="color"></label></div>
+    </section>
+    <section id="layout" class="panel" hidden>
+      <div class="section-head"><div><p class="eyebrow">04 / PLACEMENT</p><h2>어디에 표시할까요?</h2></div></div>
+      <div class="grid two"><label title="말씀을 표시할 모니터입니다. 현재 화면은 설정 창이 있는 화면입니다.">모니터<select id="monitor"></select></label><label title="연결된 모니터 목록을 다시 불러옵니다">모니터 목록<button type="button" id="refresh-monitors" class="secondary refresh">새로고침</button></label></div>
+      <div class="grid two"><label title="모니터 너비에 대한 말씀 영역의 비율입니다">영역 너비 <output id="width-value"></output><input id="width_percent" type="range" min="10" max="100" step="1"></label><label title="모니터 높이에 대한 말씀 영역의 비율입니다">영역 높이 <output id="height-value"></output><input id="height_percent" type="range" min="10" max="100" step="1"></label></div>
+      <label title="화면에서 말씀 영역이 표시될 위치입니다">위치<select id="position"><option value="top">위</option><option value="center">가운데</option><option value="bottom">아래</option></select></label>
+    </section>
+    <footer><div class="status" id="status" role="status" aria-live="polite"></div><div class="actions"><button type="button" id="quit" class="text-button" title="앱을 완전히 종료합니다">종료</button><button type="button" id="preview" class="secondary" title="현재 설정으로 미리 표시합니다">미리보기</button><button type="button" id="save" class="primary" title="설정을 저장합니다">저장하기</button></div></footer>
+  </main><script type="module" src="settings.js"></script>
+</body></html>
